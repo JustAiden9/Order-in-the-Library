@@ -28,7 +28,7 @@ struct MainMenu: View {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Image(systemName: "info.circle.fill")
-                                                                    .foregroundStyle(.orange)
+                                    .foregroundStyle(.orange)
                                 Text("How to Play")
                                     .font(.headline)
                             }
@@ -43,7 +43,7 @@ struct MainMenu: View {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Image(systemName: "star.fill")
-                                                                    .foregroundStyle(.yellow)
+                                    .foregroundStyle(.yellow)
                                 Text("The Goal")
                                     .font(.headline)
                             }
@@ -81,7 +81,7 @@ struct MainMenu: View {
                     .padding(.horizontal)
                     Spacer()
                     
-                    NavigationLink(destination: ContentView()) {
+                    NavigationLink(destination: PickMenuView()) {
                         HStack {
                             Text("Start Sorting")
                                 .font(.title3)

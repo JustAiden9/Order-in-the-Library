@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct Order_in_the_LibraryApp: App {
+struct Order_in_the_Library: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainMenu()
         }
     }
 }
