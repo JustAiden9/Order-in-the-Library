@@ -11,22 +11,19 @@ struct SearchResult: Codable {
     let docs: [Book]
 }
 
-struct Book: Codable {
+struct Book: Codable, Identifiable {
+    var id: String { title ?? UUID().uuidString }
+
     let title: String?
     let author_name: [String]?
     let ddc: [String]?
 }
 
-func fetchBooks() {
+func fetchBooks() async -> [Book] {
     let url = URL(string: "https://openlibrary.org/search.json?q=subject:science&fields=title,author_name,ddc,cover_i&limit=20")!
 
-    // Call the API
-    let data = try! Data(contentsOf: url)
+    let (data, _) = try! await URLSession.shared.data(from: url)
     let result = try! JSONDecoder().decode(SearchResult.self, from: data)
 
-    for book in result.docs {
-        let title  = book.title ?? "Unknown Title"
-        let author = book.author_name?.first ?? "Unknown Author"
-        let ddc    = book.ddc?.first ?? "No DDC"
-    }
+    return result.docs
 }
