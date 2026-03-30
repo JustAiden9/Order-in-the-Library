@@ -16,14 +16,9 @@ struct MainMenu: View {
                         Image(systemName: "books.vertical.fill")
                             .font(.system(size: 70))
                             .foregroundStyle(.blue)
-                            .shadow(radius: 2)
-                        
                         Text("Order in the Library")
                             .font(.system(size: 32, weight: .heavy, design: .rounded))
-                            .multilineTextAlignment(.center)
                     }
-                    .padding(.top, 40)
-                    
                     VStack(alignment: .leading, spacing: 20) {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
@@ -38,8 +33,7 @@ struct MainMenu: View {
                         }
                         
                         Divider()
-                        
-                        // The Reward
+
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Image(systemName: "star.fill")
@@ -56,10 +50,6 @@ struct MainMenu: View {
                         
                         // Certificate Preview
                         HStack {
-                            Image(systemName: "certificate.fill")
-                                .font(.largeTitle)
-                                .foregroundStyle(.red)
-                            
                             VStack(alignment: .leading) {
                                 Text("Final Prize")
                                     .font(.caption)
@@ -77,7 +67,6 @@ struct MainMenu: View {
                     .padding()
                     .background(Color.white)
                     .cornerRadius(20)
-                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
                     .padding(.horizontal)
                     Spacer()
                     
@@ -92,7 +81,6 @@ struct MainMenu: View {
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(15)
-                        .shadow(radius: 5)
                     }
                     .padding(.horizontal, 40)
                 }

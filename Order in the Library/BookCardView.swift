@@ -20,6 +20,7 @@ struct BookCardView: View {
             Text(title)
                 .font(.caption)
                 .fontWeight(.bold)
+            // prevents the title of the book from breaking the app
                 .lineLimit(2)
                 .multilineTextAlignment(.center)
 

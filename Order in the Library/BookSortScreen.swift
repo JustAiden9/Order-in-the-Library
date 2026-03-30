@@ -26,6 +26,9 @@ struct BookSortScreen: View {
     // these hold our data
     @State private var books: [Book] = []
     @State private var isLoading = true
+    @AppStorage("highestUnlockedLevel") private var highestUnlockedLevel: Int = 1
+    @State private var showingResult = false
+    @State private var isCorrect = false
 
     var body: some View {
         VStack(spacing: 16) {
@@ -45,23 +48,53 @@ struct BookSortScreen: View {
                     .padding()
             } else {
                 // show the books in a scrollable row like a shelf
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(books) { book in
+                List {
+                    ForEach(books) { book in
+                        HStack {
                             BookCardView(
                                 title: book.title ?? "Unknown",
                                 author: book.author_name?.first ?? "Unknown",
                                 ddc: book.ddc?.first ?? "No DDC"
                             )
+                            Spacer()
                         }
                     }
-                    .padding(.horizontal)
+                    .onMove { source, destination in
+                        books.move(fromOffsets: source, toOffset: destination)
+                    }
                 }
-
+                .environment(\.editMode, .constant(.active))
+                .frame(height: min(CGFloat(bookCount) * 80, 400))
+                .cornerRadius(12)
+                
                 // lil hint for the player
                 Text("Sort these by DDC number, smallest to largest!")
                     .foregroundStyle(.secondary)
+                
+                Button("Check My Order!") {
+                    // compare the current order to what the sorted order should be
+                    let correctOrder = books.sorted {
+                        (Double($0.ddc?.first ?? "0") ?? 0) < (Double($1.ddc?.first ?? "0") ?? 0)
+                    }
+                    isCorrect = books.map { $0.id } == correctOrder.map { $0.id }
+
+                    if isCorrect {
+                        // unlock the next level if this is the furthest they've gotten
+                        if level >= highestUnlockedLevel {
+                            highestUnlockedLevel = level + 1
+                        }
+                    }
+
+                    showingResult = true
+                }
+                .buttonStyle(.borderedProminent)
+                .alert(isCorrect ? "Correct! 🎉" : "Not quite...", isPresented: $showingResult) {
+                    Button("OK") { }
+                } message: {
+                    Text(isCorrect ? "Level \(level) complete! Next level unlocked." : "Try rearranging the books again.")
+                }
             }
+            
 
             Spacer()
         }

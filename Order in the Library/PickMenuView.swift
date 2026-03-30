@@ -8,45 +8,67 @@
 import SwiftUI
 
 struct PickMenuView: View {
+    // AppStorage saves this to UserDefaults automatically, so it persists!
+    @AppStorage("highestUnlockedLevel") private var highestUnlockedLevel: Int = 1
+
     var body: some View {
         List {
             Section("Choose a Level") {
-                NavigationLink {
-                    BookSortScreen(level: 1)
-                } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Level 1")
-                            .font(.headline)
-                        Text("Sort by Dewey numbers 3 Books")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                NavigationLink {
-                    BookSortScreen(level: 2)
-                } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Level 2")
-                            .font(.headline)
-                        Text("Sort by Dewey numbers 5 Books")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                NavigationLink {
-                    BookSortScreen(level: 3)
-                } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Level 3")
-                            .font(.headline)
-                        Text("Sort by Dewey numbers 8 Books")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
+                LevelRow(level: 1, highestUnlocked: highestUnlockedLevel)
+                LevelRow(level: 2, highestUnlocked: highestUnlockedLevel)
+                LevelRow(level: 3, highestUnlocked: highestUnlockedLevel)
             }
         }
         .navigationTitle("Pick a Level")
+    }
+}
+
+// broke this out into its own view to keep things clean
+struct LevelRow: View {
+    let level: Int
+    let highestUnlocked: Int
+
+    private var isLocked: Bool {
+        level > highestUnlocked
+    }
+
+    private var bookCount: Int {
+        switch level {
+        case 1: return 3
+        case 2: return 5
+        default: return 8
+        }
+    }
+
+    var body: some View {
+        if isLocked {
+            // locked state — no NavigationLink, just a greyed out row
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Level \(level)")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                    Text("Sort by Dewey numbers \(bookCount) Books")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "lock.fill")
+                    .foregroundStyle(.secondary)
+            }
+        } else {
+            NavigationLink {
+                BookSortScreen(level: level)
+            } label: {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Level \(level)")
+                        .font(.headline)
+                    Text("Sort by Dewey numbers \(bookCount) Books")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
     }
 }
 
