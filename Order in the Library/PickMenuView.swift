@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PickMenuView: View {
     // AppStorage saves this to UserDefaults automatically, so it persists!
-    @AppStorage("highestUnlockedLevel") private var highestUnlockedLevel: Int = 1
+    @AppStorage("highestUnlockedLevel") private var highestUnlockedLevel: Int = 1 // Stores this number in UserDefaults and keeps it in sync with the UI
 
     var body: some View {
         List {
@@ -28,12 +28,12 @@ struct LevelRow: View {
     let level: Int
     let highestUnlocked: Int
 
-    private var isLocked: Bool {
-        level > highestUnlocked
+    private var isLocked: Bool { // figures out if this level is locked
+        level > highestUnlocked // If the level number is bigger than what you've unlocked, it's locked
     }
 
-    private var bookCount: Int {
-        switch level {
+    private var bookCount: Int { // Decides how many books to sort for this level
+        switch level { // Pick a number based on the level
         case 1: return 3
         case 2: return 5
         default: return 8
@@ -57,8 +57,8 @@ struct LevelRow: View {
                     .foregroundStyle(.secondary)
             }
         } else {
-            NavigationLink {
-                BookSortScreen(level: level)
+            NavigationLink { // This makes the row tappable and pushes a new screen
+                BookSortScreen(level: level) // Create the game screen and tell it which level to load
             } label: {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Level \(level)")
@@ -72,6 +72,6 @@ struct LevelRow: View {
     }
 }
 
-#Preview {
+#Preview { 
     NavigationStack { PickMenuView() }
 }
