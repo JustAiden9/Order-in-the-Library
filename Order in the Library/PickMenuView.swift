@@ -42,7 +42,7 @@ struct LevelRow: View {
 
     var body: some View {
         if isLocked {
-            // locked state — no NavigationLink, just a greyed out row
+            // if the card is locked it means you have not completed the level before it > 1
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Level \(level)")

@@ -27,7 +27,7 @@ struct CertificateView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
 
-                // Download button — shares/saves the PDF via the system share sheet
+                // shows the save button to allow the user to download a copy of their cert, this allows them to keep it forever.
                 ShareLink(item: Bundle.main.url(forResource: "cert", withExtension: "pdf")!, preview: SharePreview("Librarian Certificate", image: Image(systemName: "doc.fill"))) {
                     Label("Save My Certificate", systemImage: "arrow.down.circle.fill")
                         .font(.headline)
