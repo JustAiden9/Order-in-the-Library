@@ -105,7 +105,7 @@ struct BookSortScreen: View {
         .task { // Runs when the view appears to load data asynchronously
             await loadBooks() // Call the async function to set up the books
         }
-        // NEW: certificate sheet, shown when level 3 is completed correctly
+        // certificate sheet, shown when level 3 is completed correctly
         .sheet(isPresented: $showingCertificate) { // Shows a popup sheet when you finish level 3
             CertificateView()
         }
