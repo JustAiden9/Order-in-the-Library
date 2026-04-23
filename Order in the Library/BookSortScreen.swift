@@ -114,8 +114,23 @@ struct BookSortScreen: View {
     func loadBooks() async { // Asynchronously fetch and prepare the books for this level
         isLoading = true
         let allBooks = await fetchBooks() // Ask for all available books (async)
-        let shuffled = allBooks.shuffled() // Randomize the order so each game feels different
-        let picked = Array(shuffled.prefix(bookCount)) // Take only as many as this level needs
+
+        // Remove books that have no DDC number at all they can't be sorted
+        let validDDC = try! Regex("^[0-9]+\\.?[0-9]*$") // all possible combinations for exmaple 001.6
+        let withDDC = allBooks.filter { book in
+            guard let ddc = book.ddc?.first, !ddc.isEmpty else { return false }
+            return (try? validDDC.wholeMatch(in: ddc)) != nil // Only keep it if the whole string matches
+        }
+ 
+        // Deduplicate: if two books share the same DDC, only keep the first one
+        var seenDDC = Set<String>()
+        let uniqueDDC = withDDC.filter { book in
+            let ddc = book.ddc!.first! // we already filtered out empty above
+            return seenDDC.insert(ddc).inserted // false if already in the set
+        }
+ 
+        let shuffled = uniqueDDC.shuffled()
+        let picked = Array(shuffled.prefix(bookCount))
         books = picked
         isLoading = false
     }
